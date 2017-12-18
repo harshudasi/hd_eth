@@ -177,7 +177,7 @@ methods.forward_eth= function(req,res,next){
     db.mongo.__findOne('hd_address_details',{address:from_address},function(err,result){
     	console.log('1213eeee ',err,result,typeof(result));
 		if(!err){
-			var privatekey = result[0]['priv_key'];
+			var privatekey = result.priv_key;
 			var ethers = parseFloat(web3.fromWei(web3.eth.getBalance(from_address), "ether"));  //how may ether u have
 			var gp= web3.fromWei((web3.eth.gasPrice*21000),"ether");
 			__logger.info('request recieved for transaction from:: ', from_address, " to:: ", to_address,"value is ",ethers_to_send);
