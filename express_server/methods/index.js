@@ -174,7 +174,7 @@ methods.forward_eth= function(req,res,next){
 	var from_address = req.body.from_address;
 	var to_address = req.body.to_address;
     var ethers_to_send = req.body.ethers;
-    db.mongo.__findOne('address_master',{'address':from_address},function(err,result){
+    db.mongo.__findOne('hd_address_details',{'address':from_address},function(err,result){
 		if(!err){
 			var privatekey = result[0]['priv_key'];
 			var ethers = parseFloat(web3.fromWei(web3.eth.getBalance(from_address), "ether"));  //how may ether u have
