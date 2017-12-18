@@ -174,7 +174,7 @@ methods.forward_eth= function(req,res,next){
 	var from_address = req.body.from_address;
 	var to_address = req.body.to_address;
     var ethers_to_send = req.body.ethers;
-    db.mongo.__findOne('hd_address_details',{address:from_address},function(err,res){
+    db.mongo.__findOne('hd_address_details',{address:from_address},function(err,result){
     	console.log('1213eeee ',err,result,typeof(result));
 		if(!err){
 			var privatekey = result[0]['priv_key'];
