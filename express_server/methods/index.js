@@ -219,7 +219,7 @@ methods.forward_eth= function(req,res,next){
 						'conformations':"0",
 						'flag':"outgoing"
  				    };
-					db.mysql.__insert('transaction_details',insert_dict,function(err,result){
+					db.mongo.__insert('transaction_details',insert_dict,function(err,result){
 						// console.log('ttttt',err,result);
 						if(!err){
 							__logger.info('funds of ::',req_ethers,'transferred sucessful',"from address:: ", from_address, "to address:: ",to_address,"with hash of ::",hash);
