@@ -84,7 +84,7 @@ methods.get_hd_address = function(req,response,next){
 		}
 		else{
 			if(res){
-				console.log('old user::: ', res.user);
+				console.log('old user::: ', res);
 				var key = res.key;
 				var index = res.current_index + 1;
 				var wallet = EthereumBip44.fromPrivateSeed(key);
