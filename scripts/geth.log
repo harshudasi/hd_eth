@@ -1,0 +1,27 @@
+INFO [10-07|22:24:26] Starting peer-to-peer node               instance=Geth/v1.7.1-stable-05101641/linux-amd64/go1.9
+INFO [10-07|22:24:26] Allocated cache and file handles         database=/home/udasi/.ethereum/geth/chaindata cache=128 handles=1024
+INFO [10-07|22:24:26] Initialised chain configuration          config="{ChainID: 15 Homestead: 0 DAO: <nil> DAOSupport: false EIP150: <nil> EIP155: 0 EIP158: 0 Byzantium: <nil> Engine: unknown}"
+INFO [10-07|22:24:26] Disk storage enabled for ethash caches   dir=/home/udasi/.ethereum/geth/ethash count=3
+INFO [10-07|22:24:26] Disk storage enabled for ethash DAGs     dir=/home/udasi/.ethash               count=2
+INFO [10-07|22:24:26] Initialising Ethereum protocol           versions="[63 62]" network=1
+INFO [10-07|22:24:26] Loaded most recent local header          number=0 hash=1e2515…60623b td=1
+INFO [10-07|22:24:26] Loaded most recent local full block      number=0 hash=1e2515…60623b td=1
+INFO [10-07|22:24:26] Loaded most recent local fast block      number=0 hash=1e2515…60623b td=1
+INFO [10-07|22:24:26] Loaded local transaction journal         transactions=0 dropped=0
+INFO [10-07|22:24:26] Regenerated local transaction journal    transactions=0 accounts=0
+INFO [10-07|22:24:26] Starting P2P networking 
+INFO [10-07|22:24:28] Mapped network port                      proto=udp extport=30303 intport=30303 interface="UPNP IGDv1-IP1"
+INFO [10-07|22:24:28] UDP listener up                          self=enode://643ede8c1e6228fd38d4867e8cd31f687a1679483b1947fc82379a808c0a830d68b540668e80aaf294c8bec9258907052bf43befcfb33eb80a2d1f0f60bf4d55@10.254.31.19:30303
+INFO [10-07|22:24:28] RLPx listener up                         self=enode://643ede8c1e6228fd38d4867e8cd31f687a1679483b1947fc82379a808c0a830d68b540668e80aaf294c8bec9258907052bf43befcfb33eb80a2d1f0f60bf4d55@10.254.31.19:30303
+INFO [10-07|22:24:28] IPC endpoint opened: /home/udasi/.ethereum/geth.ipc 
+INFO [10-07|22:24:28] Mapped network port                      proto=tcp extport=30303 intport=30303 interface="UPNP IGDv1-IP1"
+INFO [10-07|22:39:31] Updated mining threads                   threads=0
+INFO [10-07|22:39:31] Transaction pool price threshold updated price=18000000000
+INFO [10-07|22:39:31] Starting mining operation 
+INFO [10-07|22:39:31] Commit new mining work                   number=1 txs=0 uncles=0 elapsed=170.759µs
+INFO [10-07|22:39:47] IPC endpoint closed: /home/udasi/.ethereum/geth.ipc 
+INFO [10-07|22:39:47] Blockchain manager stopped 
+INFO [10-07|22:39:47] Stopping Ethereum protocol 
+INFO [10-07|22:39:47] Ethereum protocol stopped 
+INFO [10-07|22:39:47] Transaction pool stopped 
+INFO [10-07|22:39:47] Database closed                          database=/home/udasi/.ethereum/geth/chaindata
