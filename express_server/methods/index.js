@@ -180,65 +180,73 @@ methods.forward_eth= function(req,res,next){
 
 			// var privatekey = result.priv_key;
 			var index = result.index;
-			var privatekey = '0x' + wallet.getPrivateKey(index).toString();
-			var ethers = parseFloat(web3.fromWei(web3.eth.getBalance(from_address), "ether"));  //how may ether u have
-			var gp= web3.fromWei((web3.eth.gasPrice*21000),"ether");
-			__logger.info('request recieved for transaction from:: ', from_address, " to:: ", to_address,"value is ",ethers_to_send);
-			var req_ethers =  parseFloat(ethers_to_send)+ parseFloat(gp);
-			if(ethers < req_ethers){
-				__logger.info('insufficient funds in ', from_address, " funds is ", ethers);
-				new __res.ERROR('insufficent_funds').send(res);
-			}
-			else{
-				var pk = new Buffer(privatekey.slice(2, privatekey.length), "hex")
-				var rawTx = {
-					"nonce": web3.toHex(web3.eth.getTransactionCount(from_address)),
-					"gasPrice": web3.toHex(web3.eth.gasPrice),
-					"gasLimit": web3.toHex(21000),
-					"to": to_address,
-					"value": web3.toHex(web3.toWei(ethers_to_send, "ether")),
-					chainId: web3.toHex(3)
+			db.mongo.__findOne('hd_key_details',{user:result.user},function(err,res1){
+				if(err){
+
 				}
-				var tx = new Tx(rawTx);
-			    tx.sign(pk);
-	    		var serializedTx = tx.serialize();
-				web3.eth.sendRawTransaction("0x" + serializedTx.toString('hex'), function(err, hash) {
-					console.log('asasasasasasas' ,err,hash);
-			    if (err)
-			    {
-					// console.log("error in sending transaction  "+err);
-					__logger.error('couldnot send funds ', from_address, "to address ",to_address,"because of error::",err);
-					new __res.ERROR('error in sending transaction').send(res);
-				}
-			    else{
-			      // console.log("sucessful transction!!!! hash is"+hash);
-				   	var timestamp = (Math.floor(Date.now() / 1000)).toString();
-					var insert_dict = {
-						'txid':hash,
-						'from_address':from_address,
-						'to_address':to_address,
-						'value':web3.toWei(req_ethers,'ether'),    //ether with fee included
-						'timestamp':timestamp,
-						'conformations':"0",
-						'flag':"outgoing"
- 				    };
-					db.mongo.__insert('transaction_details',insert_dict,function(err,result){
-						// console.log('ttttt',err,result);
-						if(!err){
-							__logger.info('funds of ::',req_ethers,'transferred sucessful',"from address:: ", from_address, "to address:: ",to_address,"with hash of ::",hash);
-							new __res.SUCCESS({'sucessful_transction':true,"transaction_hash":hash,"time":timestamp,"responce":result}).send(res);
+				else{
+					var key = res1.key;
+					var wallet = EthereumBip44.fromPrivateSeed(key);
+					var privatekey = '0x' + wallet.getPrivateKey(index).toString();
+					var ethers = parseFloat(web3.fromWei(web3.eth.getBalance(from_address), "ether"));  //how may ether u have
+					var gp= web3.fromWei((web3.eth.gasPrice*21000),"ether");
+					__logger.info('request recieved for transaction from:: ', from_address, " to:: ", to_address,"value is ",ethers_to_send);
+					var req_ethers =  parseFloat(ethers_to_send)+ parseFloat(gp);
+					if(ethers < req_ethers){
+						__logger.info('insufficient funds in ', from_address, " funds is ", ethers);
+						new __res.ERROR('insufficent_funds').send(res);
+					}
+					else{
+						var pk = new Buffer(privatekey.slice(2, privatekey.length), "hex")
+						var rawTx = {
+							"nonce": web3.toHex(web3.eth.getTransactionCount(from_address)),
+							"gasPrice": web3.toHex(web3.eth.gasPrice),
+							"gasLimit": web3.toHex(21000),
+							"to": to_address,
+							"value": web3.toHex(web3.toWei(ethers_to_send, "ether")),
+							chainId: web3.toHex(3)
 						}
-						else{
-							__logger.info('couldnot insert in mysql ', from_address, "to address ",to_address,"because of error::",err);
-							new __res.ERROR('error in mysql insertion').send(res);
+						var tx = new Tx(rawTx);
+					    tx.sign(pk);
+			    		var serializedTx = tx.serialize();
+						web3.eth.sendRawTransaction("0x" + serializedTx.toString('hex'), function(err, hash) {
+						console.log('asasasasasasas' ,err,hash);
+					    if (err)
+					    {
+							// console.log("error in sending transaction  "+err);
+							__logger.error('couldnot send funds ', from_address, "to address ",to_address,"because of error::",err);
+							new __res.ERROR('error in sending transaction').send(res);
 						}
-					});
+					    else{
+					      // console.log("sucessful transction!!!! hash is"+hash);
+						   	var timestamp = (Math.floor(Date.now() / 1000)).toString();
+							var insert_dict = {
+								'txid':hash,
+								'from_address':from_address,
+								'to_address':to_address,
+								'value':web3.toWei(req_ethers,'ether'),    //ether with fee included
+								'timestamp':timestamp,
+								'conformations':"0",
+								'flag':"outgoing"
+		 				    };
+							db.mongo.__insert('transaction_details',insert_dict,function(err,result){
+								// console.log('ttttt',err,result);
+								if(!err){
+									__logger.info('funds of ::',req_ethers,'transferred sucessful',"from address:: ", from_address, "to address:: ",to_address,"with hash of ::",hash);
+									new __res.SUCCESS({'sucessful_transction':true,"transaction_hash":hash,"time":timestamp,"responce":result}).send(res);
+								}
+								else{
+									__logger.info('couldnot insert in mysql ', from_address, "to address ",to_address,"because of error::",err);
+									new __res.ERROR('error in mysql insertion').send(res);
+								}
+							});
+							}
+						});
 
 					}
-
-				});
-
-			}
+				}
+			})
+			
 		}
 		else{
 			__logger.info('Error:: ',err);
