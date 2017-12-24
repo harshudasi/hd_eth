@@ -91,8 +91,8 @@ methods.get_hd_address = function(req,response,next){
 				var hd_address = wallet.getAddress(index);
                 // var tmp = wallet.getPrivate(index);
                 // console.log('tttt ',tmp);
-				var priv_key = '0x' + wallet.getPrivateKey(index).toString();
-				console.log('qw1::: ',priv_key.toString());
+				// var priv_key = '0x' + wallet.getPrivateKey(index).toString();
+				// console.log('qw1::: ',priv_key.toString());
 
 				// console.log('pp ',JSON.stringify(priv_key),JSON.parse(JSON.stringify(priv_key))['data'].length);
 				// var priv_key_arr = JSON.parse(JSON.stringify(priv_key))['data']
@@ -110,7 +110,7 @@ methods.get_hd_address = function(req,response,next){
 					user:user,
 					index:index,
 					address:hd_address,
-					priv_key:priv_key
+					// priv_key:priv_key
 				}
 				db.mongo.__insert('hd_address_details',insert_dict,function(err,res){
 					if(err){
@@ -137,7 +137,7 @@ methods.get_hd_address = function(req,response,next){
 				var wallet = new EthereumBip44(key);
 				var index = 0;
 				var hd_address = wallet.getAddress(index);
-				var priv_key = '0x' + wallet.getPrivateKey(index).toString();
+				// var priv_key = '0x' + wallet.getPrivateKey(index).toString();
 				insert_dict = {
 					user:user,
 					key:key.toString(),
@@ -153,7 +153,7 @@ methods.get_hd_address = function(req,response,next){
 							user:user,
 							address:hd_address,
 							index:index,
-							priv_key:priv_key
+							// priv_key:priv_key
 						}
 						db.mongo.__insert('hd_address_details',insert_params,function(err,res){
 							if(err){
@@ -177,7 +177,10 @@ methods.forward_eth= function(req,res,next){
     db.mongo.__findOne('hd_address_details',{address:from_address},function(err,result){
     	console.log('1213eeee ',err,result,typeof(result));
 		if(!err){
-			var privatekey = result.priv_key;
+
+			// var privatekey = result.priv_key;
+			var index = result.index;
+			var privatekey = '0x' + wallet.getPrivateKey(index).toString();
 			var ethers = parseFloat(web3.fromWei(web3.eth.getBalance(from_address), "ether"));  //how may ether u have
 			var gp= web3.fromWei((web3.eth.gasPrice*21000),"ether");
 			__logger.info('request recieved for transaction from:: ', from_address, " to:: ", to_address,"value is ",ethers_to_send);
